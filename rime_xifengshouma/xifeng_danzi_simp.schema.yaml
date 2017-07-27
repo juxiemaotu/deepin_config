@@ -45,17 +45,14 @@ engine:                                 # 輸入引擎設定，即掛接組件�
     - fallback_segmentor                # ※ 標識其他未標識段落
 
   translators:                          # 三、這批組件翻譯特定類型的編碼段爲一組候選文字
-#    - echo_translator                   # ※ 沒有其他候選字時，回顯輸入碼〔輸入碼可以Shift+Enter上屛〕
     - punct_translator                  # ※ 轉換標點符號，配合punct_segmentor轉換標點符號
     - table_translator                  # ※ 碼表翻譯器，用於倉頡、五筆等基於碼表的輸入方案，替換 script_translator。此項可加載多個實例，後接@+翻譯器名〔如：cangjie、wubi等〕
-#    - script_translator                 # ※ 腳本翻譯器，用於拼音等基於音節表的輸入方案，此項可加載多個實例，後接@+翻譯器名〔如：pinyin、jyutping等〕
     - reverse_lookup_translator         # ※ 反查翻譯器，用另一種編碼方案查碼
 
 speller:
   alphabet: ';,/.eiaoubcdfghjklmnpqrstvwxyz0123456789' #用作输入的键（区分大小写，不分顺序）
   initials: 'bcdfghjklmnpqrstvwxyzo'        #首位编码
   auto_select: true                        #自動上屛〔true或false〕，使用顶功必须打开
-  auto_select_pattern: '|(.[aeiou][bcdfghjklmnpqrstvwxyz].)|(.{0,3}[;,./])|(.{0,4})'  #自動上屏規則，以正則表達式描述，當輸入串可以被匹配時自動頂字上屏。
 
 translator:                                       # 翻译器，依赖码表（字典）
   dictionary: xifeng_danzi_simp                   # 字典名，一张字典文件即可，部署后自动生成table.bin文件
@@ -67,7 +64,7 @@ reverse_lookup:                                #用另一种编码方式反查�
   prefix: "`"                                   #反查引导键，输入法自行标记分段翻译处理，不用写在编码中，故可随意自定义
   suffix: "'"                                   #反查终止键，一般在recognizer/pattrens正则处理掉，不用编辑输入
   tips: 〔拼音反查〕
-  preedit_format:                               #拼音转化规则中丽郎当悟原刷*着次淑*势齑网a*市就'、；/.'
+  preedit_format:                               #拼音转化规则
     - xform/([nl])v/$1ü/
     - xform/([nl])ue/$1üe/
     - xform/([jqxy])v/$1u/
@@ -75,8 +72,6 @@ reverse_lookup:                                #用另一种编码方式反查�
 punctuator:                           #標點符號設置，可先默认，在定义覆盖部分。
   import_preset: symbols
   half_shape:                         #将;//对应的默认标点转移，避免非全码连续输入时出错
-#   '\' : [ 、, '\', ＼ ]             # \斜线已全局映射，无法使用数字键选标点，将其对应的默认标点转移空
-#    '/': [ 、, ､, '/', ／, ÷ ]       # 因symbols无法使用数字键选标点，将其对应的默认标点转移空
     ';': [ '$$', '**', "###", '```' ]            # 替换成常用标点，以TAB切换，方便输入(markdown常用)，建议最多设四个，避免出错也不便捷
     '[': [ ';', '/', ÷, ／, 「, 【, 〔, ［ ]         # 补“;”，“/”，及本身
     ']': [ 、, '\', ＼, 」, 】, 〕, ］ ]             # 补“、”，“\”，及本身
